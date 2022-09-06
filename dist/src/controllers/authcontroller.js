@@ -22,6 +22,7 @@ const signToken = id => {
     });
 };
 const createSendToken = (admin, statusCode, res) => {
+    console.log(admin);
     const token = signToken(admin._id);
     //Remove password from output
     admin.Admpassword = undefined;
@@ -68,6 +69,7 @@ exports.login = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
         });
         return;
     }
+    //id and role instead admin whole object
     // 3) If everything ok, send token to client
     createSendToken(admin, 200, res);
 });

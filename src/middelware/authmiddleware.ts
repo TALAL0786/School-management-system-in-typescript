@@ -37,13 +37,8 @@ exports.protect = async (req, res, next) => {
   next();
 };
 
+
 exports.restrictTo= async (req, res, next) => {
-    if(req.headers.role!=="admin"||"Admin")
-                  {  res.status(400).send({
-                    message: "YOU ARE NOT AN AOUTHORIZED USER TO PERFORM THIS ACTION"
-                  });
-                return;
-                  }
+  console.log(req.user);
     next();
 };
-  

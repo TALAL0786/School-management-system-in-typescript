@@ -43,9 +43,9 @@ models.sequelize
 
 // Routes
 // 3) ROUTES
-app.use('/api/v1/tours', teacherRouter);
-app.use('/api/v1/users', studentRouter);
-app.use('/api/v1/users', adminRouter);
+app.use('/teacher', teacherRouter);
+app.use('/student', studentRouter);
+app.use('/admin', adminRouter);
 // Running server
 const port = parseInt(process.env.PORT, 10) || 2000;
 app.set("port", port);

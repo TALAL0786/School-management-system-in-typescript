@@ -1,9 +1,5 @@
-import { error } from 'console';
-import crypt from 'crypto';
 import jwt from 'jsonwebtoken';
 const model= require('../models');
-import bcrypt from 'bcryptjs';
-import { json } from 'sequelize';
 import multer= require("multer")
 import path= require("path")
 
@@ -14,6 +10,7 @@ const signToken = id => {
   };
   
   const createSendToken = (admin, statusCode: number, res: any) => {
+console.log(admin)
     const token = signToken(admin._id);
     //Remove password from output
     admin.Admpassword = undefined;
@@ -60,6 +57,7 @@ exports.login = async (req, res, next) => {
     });
     return; 
   }
+  //id and role instead admin whole object
 
  // 3) If everything ok, send token to client
   createSendToken(admin, 200, res);

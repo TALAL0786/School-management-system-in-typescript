@@ -42,12 +42,7 @@ exports.protect = (req, res, next) => __awaiter(void 0, void 0, void 0, function
     next();
 });
 exports.restrictTo = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    if (req.headers.role !== "admin" || "Admin") {
-        res.status(400).send({
-            message: "YOU ARE NOT AN AOUTHORIZED USER TO PERFORM THIS ACTION"
-        });
-        return;
-    }
+    console.log(req.user);
     next();
 });
 //# sourceMappingURL=authmiddleware.js.map
