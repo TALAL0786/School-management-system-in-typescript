@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "dist/app.js",
   "scripts": {
-    "prebuild": "echo I run before the build script",
+    "prebuild": "rm -rf ./dist",
     "start": "npm run prebuild && tsc  && NODE_ENV=development tsc-watch --onSuccess \"node dist/app.js\"",
     "prod": "npm run prebuild && tsc  && NODE_ENV=production tsc-watch --onSuccess \"node dist/app.js\"",
     "lint": "eslint . --ext .ts",
