@@ -3,15 +3,16 @@ const model= require('../models');
 import multer= require("multer")
 import path= require("path")
 
-const signToken = id => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, {
+const signToken = (id, role) => {
+    return jwt.sign({ id, role }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES_IN
     });
   };
   
   const createSendToken = (admin, statusCode: number, res: any) => {
-console.log(admin)
-    const token = signToken(admin._id);
+    const role= "admin";
+    const id= 1
+    const token = signToken(id,role);
     //Remove password from output
     admin.Admpassword = undefined;
     res.status(statusCode).json({

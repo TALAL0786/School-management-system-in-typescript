@@ -16,14 +16,15 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const model = require('../models');
 const multer = require("multer");
 const path = require("path");
-const signToken = id => {
-    return jsonwebtoken_1.default.sign({ id }, process.env.JWT_SECRET, {
+const signToken = (id, role) => {
+    return jsonwebtoken_1.default.sign({ id, role }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRES_IN
     });
 };
 const createSendToken = (admin, statusCode, res) => {
-    console.log(admin);
-    const token = signToken(admin._id);
+    const role = "admin";
+    const id = 1;
+    const token = signToken(id, role);
     //Remove password from output
     admin.Admpassword = undefined;
     res.status(statusCode).json({

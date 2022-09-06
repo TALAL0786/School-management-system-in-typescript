@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const model = require('../models');
 const util_1 = require("util");
 const jwt = require('jsonwebtoken');
+let decoded = " ";
 //to protect routes
 exports.protect = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     // 1) Getting token and check of it's there
@@ -28,21 +29,24 @@ exports.protect = (req, res, next) => __awaiter(void 0, void 0, void 0, function
         return;
     }
     // 2) Verification token
-    const decoded = yield (0, util_1.promisify)(jwt.verify)(token, process.env.JWT_SECRET);
+    decoded = yield (0, util_1.promisify)(jwt.verify)(token, process.env.JWT_SECRET);
+    console.log(decoded.role);
     // 3) Check if user still exists
-    const currentAdmin = yield model.Admin.findOne(decoded.id);
+    const currentAdmin = yield model.Admin.findOne({ where: { Aid: decoded.id } });
     if (!currentAdmin) {
         res.status(400).send({
             message: "user belong to this token does not exist"
         });
         return;
     }
-    // GRANT ACCESS TO PROTECTED ROUTE
     req.user = currentAdmin;
     next();
 });
 exports.restrictTo = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req.user);
+    if (decoded.role !== "admin") {
+        return res.status(400).json({ message: "admin role is authorized only" });
+    }
+    console.log(decoded);
     next();
 });
 //# sourceMappingURL=authmiddleware.js.map

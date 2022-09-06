@@ -15,6 +15,6 @@ router.patch('/updatestudent/:id', authmiddleware.protect, studentController.upd
 router.patch('/updateteacher/:id', authmiddleware.protect, teacherController.updateTeacher);
 //delete by using req.params
 router.delete('/deletestudent/:id', authmiddleware.protect, studentController.deleteStudent);
-router.delete('/deleteteacher/:id', authmiddleware.restrictTo, authmiddleware.protect, teacherController.deleteTeacher);
+router.delete('/deleteteacher/:id', authmiddleware.protect, authmiddleware.restrictTo, teacherController.deleteTeacher);
 module.exports = router;
 //# sourceMappingURL=admin.js.map

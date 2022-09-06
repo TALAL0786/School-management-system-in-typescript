@@ -1,7 +1,7 @@
 const model= require('../models');
 import { promisify } from 'util';
 const jwt = require('jsonwebtoken');
-
+let decoded:any=" ";
 //to protect routes
 exports.protect = async (req, res, next) => {
   // 1) Getting token and check of it's there
@@ -22,23 +22,26 @@ exports.protect = async (req, res, next) => {
   }
 
   // 2) Verification token
-  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+  decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+  console.log(decoded.role)
   // 3) Check if user still exists
-  const currentAdmin = await model.Admin.findOne(decoded.id);
+  const currentAdmin = await model.Admin.findOne({ where: { Aid:decoded.id }});
   if (!currentAdmin) {
     res.status(400).send({
       message: "user belong to this token does not exist"
     });
     return;
   }
-
-  // GRANT ACCESS TO PROTECTED ROUTE
-  req.user = currentAdmin;
+   req.user=currentAdmin
   next();
 };
 
-
 exports.restrictTo= async (req, res, next) => {
-  console.log(req.user);
+  if(decoded.role !== "admin")
+  {
+    return res.status(400).json({ message: "admin role is authorized only" });
+  }
+  console.log(decoded)
     next();
 };
+  
