@@ -68,11 +68,9 @@ exports.addstudentstoclass = (req, res) => __awaiter(this, void 0, void 0, funct
         if (!teacher) {
             return res.status(400).json({ message: 'teacher Not Found' });
         }
-        // console.log(req.params.teacherId,req.params.studentId,req.body.class)
+        console.log(req.params.teacherId, req.params.studentId);
         yield teacher.addStudent(req.params.studentId, {
-            through: {
-                class: req.body.class
-            }
+            through: {}
         })
             .then((response) => {
             console.log("created");

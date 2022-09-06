@@ -63,12 +63,10 @@ exports.addstudentstoclass=async (req, res) =>{
       if (!teacher) {
         return res.status(400).json({ message: 'teacher Not Found' });
       }
-      // console.log(req.params.teacherId,req.params.studentId,req.body.class)
+      console.log(req.params.teacherId,req.params.studentId)
      
       await teacher.addStudent(req.params.studentId, {
-        through: {
-          class: req.body.class
-        }
+        through: {   }
       })
         .then((response) => {
           console.log("created")
