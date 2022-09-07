@@ -31,7 +31,7 @@ const findAll=()=>{
     include: [{
        model: model.Student,
        as: 'students',
-       attributes: ['stname'],
+       attributes: ['stname','Sid'],
        through: {
         attributes: []
       }

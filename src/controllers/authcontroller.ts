@@ -11,7 +11,6 @@ const signToken = (id, role) => {
   };
   
   const createSendToken = (admin, statusCode: number, res: any) => {
-    console.log(admin.Aid,admin.Admname)
     const token = signToken(admin.Aid,admin.Admname);
     //Remove password from output
     admin.Admpassword = undefined;
@@ -25,7 +24,6 @@ const signToken = (id, role) => {
   };
 
   exports.signup =async(req, res, next) => {
-    
     try{const newAdmin: IAdminAttributes =await create({
       Aid: req.body.Aid,
       Admname: req.body.Admname,
@@ -58,8 +56,6 @@ exports.login = async (req, res, next) => {
     });
     return; 
   }
-  
-
   createSendToken(admin, 200, res);
 };
 
