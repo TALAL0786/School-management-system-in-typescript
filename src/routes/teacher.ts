@@ -7,6 +7,8 @@ const studentcontroller1 = require('../controllers/studentcontroller');
 const router2 = express2.Router();
 //assign student
 router2.post('/:teacherId/assign/:studentId', teachercontroller1.addstudentstoclass);
+//get all assigned students
+router2.get('/allstudents', teachercontroller1.allteachers);
 //update student and teacher
 router2.patch('/updatestudent/:id', studentcontroller1.updateStudent)
 router2.patch('/updateteacher/:id', teachercontroller1.updateTeacher)

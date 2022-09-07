@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 const model= require('../models');
 import multer= require("multer")
 import path= require("path")
+import {create} from "../services/adminServices"
 
 const signToken = (id, role) => {
     return jwt.sign({ id, role }, process.env.JWT_SECRET, {
@@ -10,23 +11,22 @@ const signToken = (id, role) => {
   };
   
   const createSendToken = (admin, statusCode: number, res: any) => {
-    const role= "admin";
-    const id= 1
-    const token = signToken(id,role);
+    console.log(admin.Aid,admin.Admname)
+    const token = signToken(admin.Aid,admin.Admname);
     //Remove password from output
     admin.Admpassword = undefined;
     res.status(statusCode).json({
       status: 'success',
       token,
       data: {
-        admin
+        admin : admin
       }
     })
   };
 
   exports.signup =async(req, res, next) => {
     
-    try{const newAdmin = await model.Admin.create({
+    try{const newAdmin: IAdminAttributes =await create({
       Aid: req.body.Aid,
       Admname: req.body.Admname,
       password: req.body.password,
@@ -58,9 +58,8 @@ exports.login = async (req, res, next) => {
     });
     return; 
   }
-  //id and role instead admin whole object
+  
 
- // 3) If everything ok, send token to client
   createSendToken(admin, 200, res);
 };
 

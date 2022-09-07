@@ -37,9 +37,10 @@ exports.protect = async (req, res, next) => {
 };
 
 exports.restrictTo= async (req, res, next) => {
-  if(decoded.role !== "admin")
+  console.log(decoded.Admname)
+  if(decoded.role !== "Administrator")
   {
-    return res.status(400).json({ message: "admin role is authorized only" });
+    return res.status(400).json({ message: "You are not authorized to perform this action" });
   }
   console.log(decoded)
     next();

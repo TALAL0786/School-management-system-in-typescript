@@ -1,8 +1,9 @@
 const model1= require('../models');
+import {create,update,findOne, destroy,findAll} from "../services/teacherServices"
 
 //add teacher
 exports.createTeacher = async (req, res, next) => {
-  const newTeacher = await model1.Teacher.create(req.body);
+  const newTeacher: ITeacherAttributes = await create(req.body);
   res.status(201).json({
     status: 'success',
     data: {
@@ -13,48 +14,40 @@ exports.createTeacher = async (req, res, next) => {
 
 //update teacher
 exports.updateTeacher = async (req, res, next) => {
-  const id = req.params.id;
-  await model1.Teacher.update(req.body, { where: { Tid: id } });
-  const updateteacher= await model1.Teacher.findOne({ where: { Tid: id } });
-  if (!updateteacher) {
+  const checkteacher=await findOne(req.params);
+  if (!checkteacher) {
     res.status(400).send({
       message: "no teacher have this ID"
     });
     return;
   }
-
+  //if teacher in db than update it
+                   await update(req);
   res.status(200).json({
     status: 'success',
     data: {
-      teacher: updateteacher
+      teacher:  `teacher at ${req.params.id} updated successfully`
     }
   });
 };
 
  //Delete teacher
  exports.deleteTeacher = async (req, res, next) => {
-  const teacher_data = await model1.Teacher.destroy({
-    where: { Tid: req.params.id },
-  });
+  const teacher_data: ITeacherAttributes = await destroy(req.params.id);
   if (!teacher_data) return res.status(400).json({ message: "no record" });
   else res.status(201).send("success" + req.params.id);
 };
 
 //get all teacher
-exports.getall=(_req: any, res: { status: (arg0: number) => { (): any; new(): any; json: { (arg0: any): any; new(): any; }; }; }, next: any)=>{
-    model1.teacher.findAll({
-        include: [{
-            model: model1.Student,
-            as: 'tasks'
-          }]
-    })
-    .then((teacher: any) => {
-      return res.status(200).json(teacher)
-    })
-    .catch((error: any) => {
-      return res.status(400).json(error)
-    });
-  }
+exports.allteachers = async (req, res) => {
+try{
+  const data = await findAll()
+  return res.status(200).json(data)
+}catch(error){
+  return res.status(400).json(error)
+}
+}
+
 
 //assign student to teacher
 exports.addstudentstoclass=async (req, res) =>{
@@ -80,16 +73,4 @@ exports.addstudentstoclass=async (req, res) =>{
       return res.status(400).json(error)
     });
 }
-
-
-
-// exports.createTeacherbyservice = async (req, res, next) => {
-//   const newTeacher = await userservice.create(req.body);
-//   res.status(201).json({
-//     status: 'success',
-//     data: {
-//       teacher: newTeacher
-//     }
-//   });
-// };
 

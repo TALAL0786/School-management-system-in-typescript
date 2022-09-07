@@ -1,8 +1,9 @@
 const model2= require('../models');
+import {create,update,findOne, destroy} from "../services/studentServices"
 
 //add student
 exports.createStudent = async (req, res, next) => {
-    const newStudent = await model2.Student.create(req.body);
+    const newStudent: IStudentAttributes =  await create(req.body);
   
     res.status(201).json({
       status: 'success',
@@ -15,20 +16,21 @@ exports.createStudent = async (req, res, next) => {
 
 //update student
   exports.updateStudent = async (req, res, next) => {
-    const id = req.params.id;
-    await model2.Student.update(req.body, { where: { Sid: id } });
-    const updatestudent= await model2.Student.findOne({ where: { Sid: id } });
-    if (!updatestudent) {
+    //is there is any student having this ID?
+    const checkstudent=await findOne(req.params);
+    if (!checkstudent) {
       res.status(400).send({
         message: "no student have this ID"
       });
       return;
     }
-  
+    //if there are student in db than update it
+    await update(req);
+
     res.status(200).json({
       status: 'success',
       data: {
-        student: updatestudent
+        student: `Student at ${req.params.id} updated successfully`
       }
     });
   };
@@ -36,7 +38,8 @@ exports.createStudent = async (req, res, next) => {
 
 //Delete student
 exports.deleteStudent = async (req, res, next) => {
-  const user_data = await model2.Student.destroy({ where: { Sid: req.params.id } });
-  if (user_data) return res.status(400).json({ message: "no record" });
+  const user_data: IStudentAttributes = await destroy(req.params.id);
+  if (!user_data) 
+  {return res.status(400).json({ message: "no record" });}
   else res.status(201).send("success" + req.params.id);
 };
