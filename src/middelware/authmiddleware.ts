@@ -23,7 +23,7 @@ exports.protect = async (req, res, next) => {
 
   // 2) Verification token
   decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-  console.log(decoded.role)
+  console.log(decoded.id)
   // 3) Check if user still exists
   const currentAdmin = await model.Admin.findOne({ where: { Aid:decoded.id }});
   if (!currentAdmin) {
@@ -32,13 +32,13 @@ exports.protect = async (req, res, next) => {
     });
     return;
   }
-   req.user=currentAdmin
+   req.user=decoded
   next();
 };
 
 exports.restrictTo= async (req, res, next) => {
-  console.log(decoded.Admname)
-  if(decoded.role !== "Administrator")
+  console.log(req.user.role)
+  if(req.user.role !== "Admin")
   {
     return res.status(400).json({ message: "You are not authorized to perform this action" });
   }

@@ -10,20 +10,20 @@ const signToken = (id, role) => {
     });
   };
   
-  const createSendToken = (admin, statusCode: number, res: any) => {
-    const token = signToken(admin.Aid,admin.Admname);
+  const createSendToken = (tokenidrole, statusCode: number, res: any) => {
+    const token = signToken(tokenidrole.id,tokenidrole.role);
     //Remove password from output
-    admin.Admpassword = undefined;
     res.status(statusCode).json({
       status: 'success',
       token,
       data: {
-        admin : admin
       }
     })
   };
 
   exports.signup =async(req, res, next) => {
+    let tokenidrole:any;
+    console.log(req.body)
     try{const newAdmin: IAdminAttributes =await create({
       Aid: req.body.Aid,
       Admname: req.body.Admname,
@@ -32,13 +32,19 @@ const signToken = (id, role) => {
       email:req.body.email,
       image: req.file.path //for multiple images -->files
     })
-    createSendToken(newAdmin, 201, res);
+    tokenidrole = {
+      id: newAdmin.Aid,
+      role: req.body.loginType 
+    }
+    createSendToken(tokenidrole, 201, res);
   }
     catch(error){return res.status(400).send(error);};
   }
 
 /////////////////////////////Login
 exports.login = async (req, res, next) => {
+  console.log(req.body)
+  let tokenidrole:any;
   const { Admname, password } = req.body;
   // 1) Check if name and password exist
   if (!Admname || !password) {
@@ -56,7 +62,12 @@ exports.login = async (req, res, next) => {
     });
     return; 
   }
-  createSendToken(admin, 200, res);
+
+  tokenidrole = {
+    id: admin.Aid,
+    role: req.body.loginType 
+  }
+  createSendToken(tokenidrole, 200, res);
 };
 
 ///image upload

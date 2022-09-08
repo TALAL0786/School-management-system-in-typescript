@@ -38,8 +38,8 @@ exports.createStudent = async (req, res, next) => {
 
 //Delete student
 exports.deleteStudent = async (req, res, next) => {
-  const user_data: IStudentAttributes = await destroy(req.params.id);
-  if (!user_data) 
+  const student_data: IStudentAttributes = await destroy(req.params.id);
+  if (!student_data) 
   {return res.status(400).json({ message: "no record" });}
   else res.status(201).send("success" + req.params.id);
 };
