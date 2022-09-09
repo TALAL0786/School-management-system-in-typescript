@@ -8,13 +8,22 @@ module.exports = (sequelize, DataTypes) => {
         tname: string;
         createdAt: Date;
         updatedAt: Date;
-        static associate(models: { Student: ModelStatic<Model<any, any>>; }) {
+        static associate(models) {
             // Define association here
+            //many to many association with students
             Teacher.belongsToMany(models.Student, {
                 through: "studentteacher",
-                foreignKey: 'Tid',
+                foreignKey: {
+                            name: 'Tid',
+                            allowNull: false
+                            },
                 as: 'students'});
-        }
+            //many to one association with assignments
+               Teacher.hasMany(models.Assignment, {
+                foreignKey: 'Tid',
+                as: 'assignments'});
+
+            }
     }
     Teacher.init({
         Tid: {

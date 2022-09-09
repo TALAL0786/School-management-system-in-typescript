@@ -8,10 +8,10 @@ const adminRouter=require("./src/routes/admin")
 const teacherRouter=require("./src/routes/teacher")
 const studentRouter=require("./src/routes/student")
 const cors = require("cors");
+
 // This will be our application entry. We'll setup our server here.
 // Set up the express app
 const app = express3();
-
 // Log requests to the console.
 app.use(logger("dev"));
 app.use(cors()); // To resolve No 'Access-Control-Allow-Origin' header issue.

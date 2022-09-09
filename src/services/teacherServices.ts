@@ -5,23 +5,21 @@ const create=(obj:ITeacherAttributes)=>{
     return model.Teacher.create(obj)
 }
 
+
 const update=(obj)=>{
     const id = obj.params.id;
     return model.Teacher.update(obj.body, { where: { Tid: id } });
 
 }
 
-const findOne=(obj)=>{
-    const id = obj.id;
-    console.log(id)
+const findOne=(id:number)=>{
     return model.Teacher.findOne({ where: { Tid: id } });
 
 }
 
+const destroy=(id:number)=>{
 
-const destroy=(obj)=>{
-
-    return model.Teacher.destroy({ where: { Tid: obj } });
+    return model.Teacher.destroy({ where: { Tid: id } });
 
 }
 
@@ -41,10 +39,27 @@ const findAll=()=>{
 }
 
 
+const showassignments=(id:number)=>{
+    return model.Teacher.findByPk(id,{
+        include: [{
+          model: model.Assignment,
+          as: 'assignments',
+        }]
+      });
+}
+
+const findStudent=(id:number)=>{
+  return model.Assignment.findOne({ where: { Asid: id } });
+
+}
+
+
 export{
     create,
     update,
     findOne,
     destroy,
-    findAll
+    findAll,
+    showassignments,
+    findStudent
 }

@@ -3,7 +3,6 @@ const studentController = require('./../controllers/studentcontroller');
 const teacherController = require('../controllers/teachercontroller');
 const authController = require('../controllers/authcontroller');
 const authmiddleware = require('../middelware/authmiddleware');
-
 const router = express.Router();
 //authenticatiom
 router.post('/signup',authController.upload, authController.signup);

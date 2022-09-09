@@ -8,13 +8,21 @@ module.exports = (sequelize, DataTypes) => {
         stname: string;
         createdAt: Date;
         updatedAt: Date;
-        static associate(models: { Teacher: ModelStatic<Model<any, any>>; }) {
+        static associate(models) {
             // Define association here
+            //many to many with teacher
             Student.belongsToMany(models.Teacher, {
                 through: "studentteacher",
                 foreignKey: 'Sid',
                 as: 'teachers'
             });
+            //many to many with assignments
+            Student.belongsToMany(models.Assignment, {
+                through: "studentassignment",
+                foreignKey: 'Sid',
+                as: 'assignments'
+            });
+
         }
     }
     Student.init({

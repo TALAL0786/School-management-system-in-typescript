@@ -1,5 +1,5 @@
 const model2= require('../models');
-import {create,update,findOne, destroy} from "../services/studentServices"
+import {create,update,findOne, destroy,showassignments} from "../services/studentServices"
 
 //add student
 exports.createStudent = async (req, res, next) => {
@@ -43,3 +43,15 @@ exports.deleteStudent = async (req, res, next) => {
   {return res.status(400).json({ message: "no record" });}
   else res.status(201).send("success" + req.params.id);
 };
+
+
+//all assignments
+exports.studenthaveassigments = async (req, res) => {
+  try{
+    console.log(req.params.id)
+    const data = await showassignments(req.params.id)
+    return res.status(200).json(data)
+  }catch(error){
+    return res.status(400).json(error)
+  }
+}

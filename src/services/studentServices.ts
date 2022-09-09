@@ -25,10 +25,23 @@ const destroy=(obj)=>{
 
 }
 
+const showassignments=(id:number)=>{
+      return model.Student.findByPk(id,{
+        include: [{
+            model: model.Assignment,
+            as: 'assignments',
+           through: {
+            attributes: []
+          }
+        }]
+      });
+}
+
 
 export{
     create,
     update,
     findOne,
-    destroy
+    destroy,
+    showassignments
 }

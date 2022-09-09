@@ -1,5 +1,4 @@
-const model1= require('../models');
-import {create,update,findOne, destroy,findAll} from "../services/teacherServices"
+import {create,update,findOne, destroy,findAll,showassignments, findStudent} from "../services/teacherServices"
 
 //add teacher
 exports.createTeacher = async (req, res, next) => {
@@ -12,9 +11,21 @@ exports.createTeacher = async (req, res, next) => {
   });
 };
 
+//all assignments
+exports.teacherhaveassigments = async (req, res) => {
+                try{
+                  const data = await showassignments(req.params.id)
+                  return res.status(200).json(data)
+                }catch(error){
+                  return res.status(400).json(error)
+                }
+          }
+
+
+
 //update teacher
 exports.updateTeacher = async (req, res, next) => {
-  const checkteacher=await findOne(req.params);
+  const checkteacher=await findOne(req.params.id);
   if (!checkteacher) {
     res.status(400).send({
       message: "no teacher have this ID"
@@ -38,8 +49,8 @@ exports.updateTeacher = async (req, res, next) => {
   else res.status(201).send("success" + req.params.id);
 };
 
-//get all teacher
-exports.allteachers = async (req, res) => {
+//get all teacher along students
+exports.allteacherstudents = async (req, res) => {
 try{
   const data = await findAll()
   return res.status(200).json(data)
@@ -48,10 +59,34 @@ try{
 }
 }
 
+//assign assignment to student
+exports.assigntostudent=async (req, res) =>{
+ 
+  await findStudent(req.params.asid )
+    .then(async(addignment) => {
+      if (!addignment) {
+        return res.status(400).json({ message: 'addignment Not Found' });
+      }
+      console.log(req.params.asid)
+      await addignment.addStudent(req.params.stid, {
+        through: {   }
+      })
+        .then((response) => {
+          console.log("created")
+          return res.status(200).json(response)
+        })
+        .catch((error) => {
+          return res.status(400).json(error)
+        });
+    })
+    .catch((error) => {
+      return res.status(400).json(error)
+    });
+}
 
 //assign student to teacher
 exports.addstudentstoclass=async (req, res) =>{
-  await model1.Teacher.findOne({ where: { Tid: req.params.teacherId }})
+  await findOne(req.params.teacherId )
     .then(async(teacher) => {
       if (!teacher) {
         return res.status(400).json({ message: 'teacher Not Found' });
@@ -73,4 +108,5 @@ exports.addstudentstoclass=async (req, res) =>{
       return res.status(400).json(error)
     });
 }
+
 

@@ -70,6 +70,7 @@ exports.login = async (req, res, next) => {
   createSendToken(tokenidrole, 200, res);
 };
 
+
 ///image upload
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -87,11 +88,11 @@ exports.upload = multer({
       const fileTypes = /jpeg|jpg|png|gif/
       const mimeType = fileTypes.test(file.mimetype)  
       const extname = fileTypes.test(path.extname(file.originalname))
-
+    
       if(mimeType && extname) {
           return cb(null, true)
       }
-      // cb('Give proper files formate to upload')
+     // cb('Give proper files formate to upload')
   }
 }).single('image')
 
