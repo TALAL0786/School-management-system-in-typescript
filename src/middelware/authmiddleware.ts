@@ -1,6 +1,7 @@
 const model= require('../models');
 import { promisify } from 'util';
 const jwt = require('jsonwebtoken');
+const AppError = require('../helpers/appError');
 let decoded:any=" ";
 //to protect routes
 exports.protect = async (req, res, next) => {
@@ -23,14 +24,15 @@ exports.protect = async (req, res, next) => {
 
   // 2) Verification token
   decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-  console.log(decoded.id)
   // 3) Check if user still exists
   const currentAdmin = await model.Admin.findOne({ where: { Aid:decoded.id }});
   if (!currentAdmin) {
-    res.status(400).send({
-      message: "user belong to this token does not exist"
-    });
-    return;
+    return next(
+      new AppError(
+        'The user belonging to this token does no longer exist.',
+        401
+      )
+    );
   }
    req.user=decoded
   next();
@@ -40,7 +42,9 @@ exports.restrictTo= async (req, res, next) => {
   console.log(req.user.role)
   if(req.user.role !== "Admin")
   {
-    return res.status(400).json({ message: "You are not authorized to perform this action" });
+    return next(
+      new AppError('You do not have permission to perform this action', 403)
+    );
   }
   console.log(decoded)
     next();

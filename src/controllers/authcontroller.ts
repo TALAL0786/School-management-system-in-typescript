@@ -3,6 +3,7 @@ const model= require('../models');
 import multer= require("multer")
 import path= require("path")
 import {create} from "../services/adminServices"
+const catchAsync = require('../helpers/catchAsync');
 
 const signToken = (id, role) => {
     return jwt.sign({ id, role }, process.env.JWT_SECRET, {
@@ -21,9 +22,9 @@ const signToken = (id, role) => {
     })
   };
 
-  exports.signup =async(req, res, next) => {
+  exports.signup =catchAsync(async(req, res, next) => {
     let tokenidrole:any;
-    try{const newAdmin: IAdminAttributes =await create({
+    const newAdmin: IAdminAttributes =await create({
       Aid: req.body.Aid,
       Admname: req.body.Admname,
       password: req.body.password,
@@ -36,30 +37,24 @@ const signToken = (id, role) => {
       role: req.body.loginType 
     }
     createSendToken(tokenidrole, 201, res);
-  }
-    catch(error){return res.status(400).send(error);};
-  }
+  })
+
+  
 
 /////////////////////////////Login
-exports.login = async (req, res, next) => {
+exports.login = catchAsync(async (req, res, next) => {
   console.log(req.body)
   let tokenidrole:any;
   const { Admname, password } = req.body;
   // 1) Check if name and password exist
   if (!Admname || !password) {
-    res.status(400).send({
-      message: "provide name and password please"
-    });
-    return;
+    return next(new AppError('Please provide name and password!', 400));
   }
   // 2) Check if admin exists && password is correct
    const admin = await model.Admin.findOne({ where: { Admname: Admname } });
   if (!admin || !(password===admin.password))
    {
-    res.status(400).send({
-      message: "your password or name is incorrect -"
-    });
-    return; 
+    return next(new AppError('Incorrect name or password', 401));
   }
 
   tokenidrole = {
@@ -67,7 +62,7 @@ exports.login = async (req, res, next) => {
     role: req.body.loginType 
   }
   createSendToken(tokenidrole, 200, res);
-};
+});
 
 
 ///image upload

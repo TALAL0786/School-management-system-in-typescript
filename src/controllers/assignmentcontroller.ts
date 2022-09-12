@@ -6,11 +6,9 @@ const catchAsync = require('../helpers/catchAsync');
 const AppError = require('../helpers/appError');
 
 exports.addassignment =catchAsync(async(req, res, next) => {
-       fs.readFile(req.file.path,"utf8", async (error,buffer)=>
+       try{fs.readFile(req.file.path,"utf8", async (error,buffer)=>
        {
-        if(error){
-          return next(new AppError('Unable to read file.', 401));
-                  }  
+  
           const newAssignment: IAssignmentAttributes =await create({
           Asid: req.body.Asid,
           Tid:req.body.Tid,
@@ -23,14 +21,16 @@ exports.addassignment =catchAsync(async(req, res, next) => {
         data: {student: newAssignment}
                           });
                         
-      })})
+      })}
+      catch(error){return next(new AppError('please provide a file .txt', 401));}
+    })
 
 
   //file upload
 const storage = multer.diskStorage({
   
   destination: (req, file, cb) => {
-      cb(null, 'txtfiles')
+    cb(null, 'txtfiles')
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + file.originalname)
@@ -47,7 +47,7 @@ exports.upload = multer({
       if(mimeType) {
           return next(null, true)
       }
-      else return next(new AppError ('Give proper files formate to upload',401))
+     return next(new AppError('Give a proper file format', 401));
   }
 }).single('myFile')
 

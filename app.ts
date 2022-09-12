@@ -7,6 +7,7 @@ var path = require("path");
 const adminRouter=require("./src/routes/admin")
 const teacherRouter=require("./src/routes/teacher")
 const studentRouter=require("./src/routes/student")
+const globalErrorHandler = require('./src/controllers/errorController');
 const cors = require("cors");
 
 // This will be our application entry. We'll setup our server here.
@@ -46,6 +47,8 @@ models.sequelize
 app.use('/teacher', teacherRouter);
 app.use('/student', studentRouter);
 app.use('/admin', adminRouter);
+//global error handling middelware
+app.use(globalErrorHandler);
 // Running server
 const port = parseInt(process.env.PORT, 10) || 2000;
 app.set("port", port);

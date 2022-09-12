@@ -26,9 +26,11 @@ const destroy=(obj)=>{
 }
 
 const showassignments=(id:number)=>{
-      return model.Student.findByPk(id,{attributes: ['stname', 'Sid']},{
+      return model.Student.findByPk(id,{
+        attributes: ['stname', 'Sid'],
         include: [{
             model: model.Assignment,
+            attributes: ['Asid', 'description'],
             as: 'assignments',
            through: {
             attributes: []
