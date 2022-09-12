@@ -63,12 +63,12 @@ try{
 exports.assigntostudent=async (req, res) =>{
  
   await findStudent(req.params.asid )
-    .then(async(addignment) => {
-      if (!addignment) {
-        return res.status(400).json({ message: 'addignment Not Found' });
+    .then(async(assignment) => {
+      if (!assignment) {
+        return res.status(400).json({ message: 'assignment Not Found' });
       }
       console.log(req.params.asid)
-      await addignment.addStudent(req.params.stid, {
+      await assignment.addStudent(req.params.stid, {
         through: {   }
       })
         .then((response) => {

@@ -11,6 +11,9 @@ router2.post('/:teacherId/assign/:studentId', teachercontroller1.addstudentstocl
 router2.post('/:stid/assigntostudent/:asid', teachercontroller1.assigntostudent);
 //upload asssisgnment
 router2.post('/uploadassignment',assignmentcontroller.upload,assignmentcontroller.addassignment);
+//onschedule
+router2.post('/uploadassignmentonschedule',assignmentcontroller.upload,assignmentcontroller.onscheduler);
+
 router2.get('/downloadassignment',assignmentcontroller.download);
 //get my assignments
 router2.get('/showassigment/:id', teachercontroller1.teacherhaveassigments);
