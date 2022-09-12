@@ -1,9 +1,7 @@
 const express2 = require('express');
-// const userController = require('./../controllers/userController');
 const authController1 = require('../controllers/authcontroller');
 const teachercontroller1 = require('../controllers/teachercontroller');
 const studentcontroller1 = require('../controllers/studentcontroller');
-const uploadhelper = require('../helpers/uploadfile');
 const assignmentcontroller= require('../controllers/assignmentcontroller');
 ///
 const router2 = express2.Router();

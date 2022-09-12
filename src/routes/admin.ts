@@ -4,7 +4,7 @@ const teacherController = require('../controllers/teachercontroller');
 const authController = require('../controllers/authcontroller');
 const authmiddleware = require('../middelware/authmiddleware');
 const router = express.Router();
-//authenticatiom
+//authentication and authorization
 router.post('/signup',authController.upload, authController.signup);
 router.post('/login', authController.login);
 //create

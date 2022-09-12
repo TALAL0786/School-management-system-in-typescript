@@ -8,8 +8,8 @@ var basename = path.basename(__filename);
 dotenv.config({ path: './.env' });
 var sequelize;
 var db = { }as IDbConnection;;
-if (process.env.NODE_ENV === "development") {
-    console.log("development server");
+if (process.env.NODE_ENVI === "development") {
+    console.log(`${process.env.NODE_ENVI} server`);
     sequelize = new Sequelize(process.env.DATABASE, process.env.USERNAM, process.env.PASSWORD, {
         host: process.env.HOST,
         dialect: process.env.DIALECT

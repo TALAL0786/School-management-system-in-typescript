@@ -23,7 +23,6 @@ const signToken = (id, role) => {
 
   exports.signup =async(req, res, next) => {
     let tokenidrole:any;
-    console.log(req.body)
     try{const newAdmin: IAdminAttributes =await create({
       Aid: req.body.Aid,
       Admname: req.body.Admname,
