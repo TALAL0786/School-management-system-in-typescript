@@ -39,19 +39,8 @@ const findAll=()=>{
 }
 
 
-const showassignments=(id:number)=>{
-    return model.Teacher.findByPk(id,{
-        include: [{
-          model: model.Assignment,
-          as: 'assignments',
-        }]
-      });
-}
 
-const findStudent=(id:number)=>{
-  return model.Assignment.findOne({ where: { Asid: id } });
 
-}
 
 
 export{
@@ -60,6 +49,4 @@ export{
     findOne,
     destroy,
     findAll,
-    showassignments,
-    findStudent
 }

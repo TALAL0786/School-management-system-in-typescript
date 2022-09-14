@@ -1,5 +1,7 @@
-import {create,update,findOne, destroy,findAll,showassignments, findStudent} from "../services/teacherServices"
+import {create,update,findOne, destroy,findAll} from "../services/teacherServices"
+import {findAssignment,showassignments} from "../services/assignmentServices"
 
+const catchAsync = require('../helpers/catchAsync');
 //add teacher
 exports.createTeacher = async (req, res, next) => {
   const newTeacher: ITeacherAttributes = await create(req.body);
@@ -14,7 +16,7 @@ exports.createTeacher = async (req, res, next) => {
 //all assignments
 exports.teacherhaveassigments = async (req, res) => {
                 try{
-                  const data = await showassignments(req.params.id)
+                  const data = await showassignments(req.query.id)
                   return res.status(200).json(data)
                 }catch(error){
                   return res.status(400).json(error)
@@ -62,7 +64,7 @@ try{
 //assign assignment to student
 exports.assigntostudent=async (req, res) =>{
  
-  await findStudent(req.params.asid )
+  await findAssignment(req.params.asid )
     .then(async(assignment) => {
       if (!assignment) {
         return res.status(400).json({ message: 'assignment Not Found' });
@@ -108,5 +110,4 @@ exports.addstudentstoclass=async (req, res) =>{
       return res.status(400).json(error)
     });
 }
-
 

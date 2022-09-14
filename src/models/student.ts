@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     class Student extends Model<InferAttributes<Student>, InferCreationAttributes<Student>> {
         Sid: number;
         stname: string;
+        fav_color:string;
         createdAt: Date;
         updatedAt: Date;
         static associate(models) {
@@ -32,6 +33,19 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
             type: DataTypes.INTEGER,
         },
+        fav_color: {
+            type: DataTypes.ENUM({
+                values: ['red', 'yellow', 'green'],
+                default: 'red',
+              }),
+              validate: {
+                isIn: {
+                  args: [['red', 'yellow', 'green']],
+                    msg: "Must be yellow red or green"
+                }
+              }
+              
+          },
         stname: {
             type: DataTypes.STRING,
         },

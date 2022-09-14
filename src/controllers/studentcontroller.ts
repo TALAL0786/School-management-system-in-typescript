@@ -44,10 +44,9 @@ exports.deleteStudent =catchAsync( async (req, res, next) => {
   else res.status(201).send("success" + req.params.id);
 });
 
-
 //all assignments
 exports.studenthaveassigments =catchAsync( async (req, res, next) => {
     const data = await showassignments(req.params.id)
     if(!data){return next(new AppError('cant find student with this ID', 404));} 
     return res.status(200).json(data);
-})
+  })

@@ -16,7 +16,7 @@ router2.post('/uploadassignmentonschedule',assignmentcontroller.upload,assignmen
 
 router2.get('/downloadassignment',assignmentcontroller.download);
 //get my assignments
-router2.get('/showassigment/:id', teachercontroller1.teacherhaveassigments);
+router2.get('/showassigment', teachercontroller1.teacherhaveassigments);
 //get all assigned students
 router2.get('/allstudents', teachercontroller1.allteacherstudents);
 //update student and teacher

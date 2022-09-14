@@ -1,12 +1,13 @@
 import {create} from "../services/assignmentServices"
 import multer= require("multer")
 import path= require("path")
+const { Op } = require("sequelize");
 import fs from 'fs';
 const model=require("../models")
 const cron = require('node-cron'); 
 const catchAsync = require('../helpers/catchAsync');
 const AppError = require('../helpers/appError');
-import {findStudent} from "../services/teacherServices"
+import {findAssignment} from "../services/assignmentServices"
 import { response } from "express";
 
 
@@ -68,30 +69,34 @@ exports.download = (req, res, next) => {
 
 //upload assignment on schedule
 exports.onscheduler =catchAsync(async(req, res, next) => {
-  cron.schedule('* * * * *', async function () { let {minid,maxid}=req.body;
+  cron.schedule('* * * * *', async function () { 
+    let {minid,maxid,Asid}=req.body;
   minid=+minid;
   maxid=+maxid
-  var st_inrange = [];
-for(let i = minid; i <= maxid; i++) {
-  let temp= await model.Student.findByPk(i);
-  if(!temp)console.log("not found")
-   else st_inrange.push(i)
-}
-for (var i in st_inrange) {
-  await findStudent(2).then(async(assignment) => {
+    var st_inrange = [];  
+    const temp =  await model.Student.findAll({attributes:['Sid'],
+      where: {
+        Sid: {
+          [Op.between]:  [minid , maxid ]
+        }}
+})
+st_inrange= temp.map(temp => {return temp.dataValues.Sid})       
+                                            //map //promiseall //promise
+  await findAssignment(Asid).then(async(assignment) => {
     if (!assignment) {
-      return res.status(400).json({ message: 'assignment Not Found' });
+      console.log("not found")
     }
-    await assignment.addStudent(st_inrange[i], {
+    for (var i in st_inrange)
+    {await assignment.addStudent(st_inrange[i], {
       through: {   }
-    })
+    })}
   })
-}
-      console.log('running a task every minute');
+
+      console.log('running a task every minute'); 
 })
    res.status(201).json({
         status: 'success Job is set to perform after time',
-                    });
+       });
  
 });
 
