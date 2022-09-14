@@ -111,7 +111,6 @@ exports.sendemail = async (req, res) => {
   //to send attachment
   var attachments = [
     {
-      // utf-8 string as an attachment
       filename: req.file.originalname,
       path: path,
     },
