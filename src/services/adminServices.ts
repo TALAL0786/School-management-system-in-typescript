@@ -1,10 +1,7 @@
-const model=require("../models")
+const model = require("../models");
 
-const create=(obj:IAdminAttributes)=>{
+const create = (obj: IAdminAttributes) => {
+  return model.Admin.create(obj);
+};
 
-    return model.Admin.create(obj)
-}
-
-export{
-    create
-}
+export { create };

@@ -1,49 +1,38 @@
-const model=require("../models")
+const model = require("../models");
 
-const create=(obj:IStudentAttributes)=>{
+const create = (obj: IStudentAttributes) => {
+  return model.Student.create(obj);
+};
 
-    return model.Student.create(obj)
-}
+const update = (obj) => {
+  const id = obj.params.id;
+  return model.Student.update(obj.body, { where: { Sid: id } });
+};
 
-const update=(obj)=>{
-    const id = obj.params.id;
-    return model.Student.update(obj.body, { where: { Sid: id } });
+const findOne = (obj) => {
+  const id = obj.id;
+  console.log(id);
+  return model.Student.findOne({ where: { Sid: id } });
+};
 
-}
+const destroy = (obj) => {
+  return model.Student.destroy({ where: { Sid: obj } });
+};
 
-const findOne=(obj)=>{
-    const id = obj.id;
-    console.log(id)
-    return model.Student.findOne({ where: { Sid: id } });
+const showassignments = (id: number) => {
+  return model.Student.findByPk(id, {
+    attributes: ["stname", "Sid"],
+    include: [
+      {
+        model: model.Assignment,
+        attributes: ["Asid", "description"],
+        as: "assignments",
+        through: {
+          attributes: [],
+        },
+      },
+    ],
+  });
+};
 
-}
-
-
-const destroy=(obj)=>{
-
-    return model.Student.destroy({ where: { Sid: obj } });
-
-}
-
-const showassignments=(id:number)=>{
-      return model.Student.findByPk(id,{
-        attributes: ['stname', 'Sid'],
-        include: [{
-            model: model.Assignment,
-            attributes: ['Asid', 'description'],
-            as: 'assignments',
-           through: {
-            attributes: []
-          }
-        }]
-      });
-}
-
-
-export{
-    create,
-    update,
-    findOne,
-    destroy,
-    showassignments
-}
+export { create, update, findOne, destroy, showassignments };

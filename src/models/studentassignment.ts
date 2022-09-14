@@ -1,15 +1,19 @@
-'use strict';
+"use strict";
 module.exports = (sequelize, DataTypes) => {
-  const studentassignment = sequelize.define('studentassignment', {
-    Asid: {
-      type: DataTypes.INTEGER,
+  const studentassignment = sequelize.define(
+    "studentassignment",
+    {
+      Asid: {
+        type: DataTypes.INTEGER,
+      },
+      Sid: {
+        type: DataTypes.INTEGER,
+      },
     },
-    Sid: {
-      type: DataTypes.INTEGER,
+    {
+      paranoid: true,
     }
-  }, {
-    paranoid: true
-  });
+  );
 
   return studentassignment;
 };

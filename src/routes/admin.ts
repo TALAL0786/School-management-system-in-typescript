@@ -1,22 +1,45 @@
-const express = require('express');
-const studentController = require('./../controllers/studentcontroller');
-const teacherController = require('../controllers/teachercontroller');
-const authController = require('../controllers/authcontroller');
-const authmiddleware = require('../middelware/authmiddleware');
+const express = require("express");
+const studentController = require("./../controllers/studentcontroller");
+const teacherController = require("../controllers/teachercontroller");
+const authController = require("../controllers/authcontroller");
+const authmiddleware = require("../middelware/authmiddleware");
 const router = express.Router();
 //authentication and authorization
-router.post('/signup',authController.upload, authController.signup);
-router.post('/login', authController.login);
+router.post("/signup", authController.upload, authController.signup);
+router.post("/login", authController.login);
 //create
-router.post('/createnewteacher',  authmiddleware.protect, teacherController.createTeacher)
-router.post('/createnewStudent', authmiddleware.protect, studentController.createStudent)
-//update by using req.params 
-router.patch('/updatestudent/:id', authmiddleware.protect, studentController.updateStudent)
-router.patch('/updateteacher/:id', authmiddleware.protect, teacherController.updateTeacher)
+router.post(
+  "/createnewteacher",
+  authmiddleware.protect,
+  teacherController.createTeacher
+);
+router.post(
+  "/createnewStudent",
+  authmiddleware.protect,
+  studentController.createStudent
+);
+//update by using req.params
+router.patch(
+  "/updatestudent/:id",
+  authmiddleware.protect,
+  studentController.updateStudent
+);
+router.patch(
+  "/updateteacher/:id",
+  authmiddleware.protect,
+  teacherController.updateTeacher
+);
 //delete by using req.params
-router.delete('/deletestudent/:id',authmiddleware.protect, studentController.deleteStudent)
-router.delete('/deleteteacher/:id', authmiddleware.protect, authmiddleware.restrictTo,teacherController.deleteTeacher)
-
-
+router.delete(
+  "/deletestudent/:id",
+  authmiddleware.protect,
+  studentController.deleteStudent
+);
+router.delete(
+  "/deleteteacher/:id",
+  authmiddleware.protect,
+  authmiddleware.restrictTo,
+  teacherController.deleteTeacher
+);
 
 module.exports = router;

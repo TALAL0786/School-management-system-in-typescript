@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     class Student extends Model<InferAttributes<Student>, InferCreationAttributes<Student>> {
         Sid: number;
         stname: string;
+        stemail: string;
         fav_color:string;
         createdAt: Date;
         updatedAt: Date;
@@ -49,6 +50,16 @@ module.exports = (sequelize, DataTypes) => {
         stname: {
             type: DataTypes.STRING,
         },
+        stemail: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true,
+            validate: {
+              isEmail: {
+                msg: "Must be a valid email address",
+              }
+            }
+          },
         createdAt: {
             allowNull: false,
             type: DataTypes.DATE,

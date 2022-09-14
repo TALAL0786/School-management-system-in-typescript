@@ -1,28 +1,23 @@
-const model=require("../models")
+const model = require("../models");
 
-const create=(obj:IAssignmentAttributes)=>{
+const create = (obj: IAssignmentAttributes) => {
+  obj.description = obj.description.replace(/(\r\n|\n|\r)/gm, "");
+  return model.Assignment.create(obj);
+};
 
-    obj.description = obj.description.replace(/(\r\n|\n|\r)/gm, "");
-    return model.Assignment.create(obj)
-}
+const showassignments = (id: number) => {
+  return model.Teacher.findByPk(id, {
+    include: [
+      {
+        model: model.Assignment,
+        as: "assignments",
+      },
+    ],
+  });
+};
 
-const showassignments=(id:number)=>{
-    return model.Teacher.findByPk(id,{
-        include: [{
-          model: model.Assignment,
-          as: 'assignments',
-        }]
-      });
-}
+const findAssignment = (id: number) => {
+  return model.Assignment.findOne({ where: { Asid: id } });
+};
 
-
-const findAssignment=(id:number)=>{
-    return model.Assignment.findOne({ where: { Asid: id } });
-  
-  }
-
-export{
-    create,
-    findAssignment,
-    showassignments
-}
+export { create, findAssignment, showassignments };

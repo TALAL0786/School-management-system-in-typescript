@@ -1,4 +1,4 @@
-import * as sequelize from 'sequelize';
+import * as sequelize from "sequelize";
 
 declare global {
   interface IDbConnection {
@@ -6,6 +6,6 @@ declare global {
     Sequelize: any;
     Admin: any;
     Teacher: any;
-    Student:any
+    Student: any;
   }
 }
