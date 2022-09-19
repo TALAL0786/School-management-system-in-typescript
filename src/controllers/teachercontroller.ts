@@ -9,10 +9,13 @@ import {
   findAssignment,
   showassignments,
 } from "../services/assignmentServices";
-
 const catchAsync = require("../helpers/catchAsync");
+let logger = require("../helpers/dev-logger");
+
 //add teacher
 exports.createTeacher = async (req, res, next) => {
+  logger.warn("text warn");
+  logger.error("text error");
   const newTeacher: ITeacherAttributes = await create(req.body);
   res.status(201).json({
     status: "success",

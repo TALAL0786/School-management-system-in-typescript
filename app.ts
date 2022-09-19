@@ -1,20 +1,22 @@
 const createError = require("http-errors");
 const http = require("http");
 const express3 = require("express");
-const logger = require("morgan");
+const logger1 = require("morgan");
 const bodyParser = require("body-parser");
 var path = require("path");
-const adminRouter=require("./src/routes/admin")
-const teacherRouter=require("./src/routes/teacher")
-const studentRouter=require("./src/routes/student")
-const globalErrorHandler = require('./src/controllers/errorController');
+const adminRouter = require("./src/routes/admin");
+const teacherRouter = require("./src/routes/teacher");
+const studentRouter = require("./src/routes/student");
+const globalErrorHandler = require("./src/controllers/errorController");
 const cors = require("cors");
+let logger3 = require("./src/helpers/dev-logger");
 
 // This will be our application entry. We'll setup our server here.
 // Set up the express app
 const app = express3();
+
 // Log requests to the console.
-app.use(logger("dev"));
+app.use(logger1("dev"));
 app.use(cors()); // To resolve No 'Access-Control-Allow-Origin' header issue.
 
 // Body parsers
@@ -33,6 +35,10 @@ models.sequelize
     throw new Error(err);
   });
 
+logger3.warn("hh");
+logger3.error("hh");
+logger3.error(new Error("something went wrong"));
+
 // Sync Database
 models.sequelize
   .sync()
@@ -44,9 +50,9 @@ models.sequelize
 
 // Routes
 // 3) ROUTES
-app.use('/teacher', teacherRouter);
-app.use('/student', studentRouter);
-app.use('/admin', adminRouter);
+app.use("/teacher", teacherRouter);
+app.use("/student", studentRouter);
+app.use("/admin", adminRouter);
 //global error handling middelware
 app.use(globalErrorHandler);
 // Running server

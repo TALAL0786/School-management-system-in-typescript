@@ -38,6 +38,7 @@
     "express": "^4.18.1",
     "js-yaml": "^4.1.0",
     "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.4",
     "morgan": "^1.10.0",
     "multer": "^1.4.4",
     "mysql2": "^2.3.3",
@@ -47,6 +48,8 @@
     "swagger-routes-express": "^3.3.1",
     "swagger-ui-express": "^4.3.0",
     "umzug": "^3.1.1",
+    "winston": "^3.8.2",
+    "winston-daily-rotate-file": "^4.7.1",
     "yamljs": "^0.3.0"
   },
   "description": ""

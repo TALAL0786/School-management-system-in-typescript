@@ -4,14 +4,11 @@
     "allowJs": true,
     "module": "commonjs",
     "esModuleInterop": true,
-    "target": "es6",
+    "target": "es2017",
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist"
   },
   "lib": ["es2015"],
-  "include": [
-    "src",
-    "app.ts",
-  ]
+  "include": ["src", "app.ts"]
 }
