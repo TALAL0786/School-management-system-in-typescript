@@ -51,7 +51,7 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!admin || !(password === admin.password)) {
     return next(new AppError("Incorrect name or password", 401));
   }
-  console.log("hyyyyy everyone");
+  console.log("hyyyyy everyone hyyy hhkk");
   tokenidrole = {
     id: admin.Aid,
     role: req.body.loginType,
